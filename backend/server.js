@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import expenseRouter from "./routes/expense.route.js";
 
 // App Config
 const app = express();
@@ -34,6 +35,9 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
+
+// expense api end point
+app.use("/api/expense", expenseRouter)
 
 
 // test api end point

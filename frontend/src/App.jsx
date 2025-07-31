@@ -1,11 +1,34 @@
-import React from 'react'
+import React from "react";
+import Navbar from "./reusable/Navbar";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 const App = () => {
   return (
     <div>
-      <h1 className='font-semibold text-blue-700'>Hello, World</h1>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* Protected Route */}
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <SignedIn>
+                <Dashboard />
+              </SignedIn>
+              <SignedOut>
+                <Route path="/" element={<Home />} />
+                {/* <RedirectToSignIn /> */}
+              </SignedOut>
+            </>
+          }
+        />
+      </Routes>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
