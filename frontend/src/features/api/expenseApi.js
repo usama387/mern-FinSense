@@ -26,7 +26,33 @@ export const expenseApi = createApi({
         body: { description },
       }),
     }),
+    getAIInsights: builder.query({
+      query: (userId) => ({
+        url: `/ai-insights/${userId}`,
+        method: "GET",
+      }),
+    }),
+    getUserExpenses: builder.query({
+      query: (userId) => ({
+        url: `/user-expenses/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["Expenses"],
+    }),
+    getUserExpensesStats: builder.query({
+      query: (userId) => ({
+        url: `/user-expnsestats/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["Expenses"],
+    }),
   }),
 });
 
-export const { useAddExpenseMutation, useSuggestCategoryMutation } = expenseApi;
+export const {
+  useAddExpenseMutation,
+  useSuggestCategoryMutation,
+  useGetUserExpensesQuery,
+  useGetUserExpensesStatsQuery,
+  useGetAIInsightsQuery,
+} = expenseApi;

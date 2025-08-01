@@ -42,3 +42,53 @@ export const addNewExpense = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getUserExpensesForChart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const expenses = await prisma.record.findMany({
+      where: { userId: userId },
+      orderBy: { date: "desc" },
+      take: 30,
+    });
+
+    const formattedData = expenses.map((exp) => ({
+      date: new Date(exp.date).toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      amount: exp.amount,
+    }));
+
+    res.status(200).json(formattedData);
+  } catch (error) {
+    console.log("Error fetching user expenses:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getUserExpensesStats = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const expenses = await prisma.record.findMany({
+      where: { userId: userId },
+      orderBy: { date: "desc" },
+      take: 30,
+    });
+
+    res.status(200).json(expenses);
+  } catch (error) {
+    console.log("Error fetching user expenses stats:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
