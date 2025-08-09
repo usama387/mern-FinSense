@@ -15,7 +15,6 @@ app.use(express.json());
 // Allow ALL origins
 const allowedOrigins = [
   process.env.PRODUCTION, // Production from env
-  "http://localhost:5173", // Localhost for development
 ];
 
 const corsOptions = {
