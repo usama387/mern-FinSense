@@ -76,7 +76,6 @@ const AddExpenseForm = ({ onAddExpense }) => {
         if (onAddExpense) {
           onAddExpense(expenseData);
         }
-        // Reset form on success (handled by useEffect if needed)
       } catch (err) {
         console.error("Failed to add expense:", err);
       }
@@ -109,7 +108,6 @@ const AddExpenseForm = ({ onAddExpense }) => {
     { data: suggestedCategory, isLoading: isSuggesting },
   ] = useSuggestCategoryMutation();
 
-  // Handle AI Suggestion
   const handleSuggestCategory = async () => {
     if (!formData.text || formData.text.trim().length < 2) {
       toast.error("Enter a valid description first!");
@@ -120,7 +118,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
       if (response?.category) {
         setFormData((prev) => ({
           ...prev,
-          category: response.category, // auto-fill category
+          category: response.category,
         }));
         toast.success(`Suggested: ${response.category}`);
       } else {
@@ -133,25 +131,25 @@ const AddExpenseForm = ({ onAddExpense }) => {
   };
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-foreground">
-          <div className="h-8 w-8 rounded-lg bg-green-600 flex items-center justify-center">
+    <Card className="bg-card border-border shadow-sm">
+      <CardHeader className="pb-3 sm:pb-4">
+        <CardTitle className="flex items-center gap-2 text-foreground text-base sm:text-lg">
+          <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-green-600 flex items-center justify-center">
             <Plus className="h-4 w-4 text-white" />
           </div>
           Add New Expense
         </CardTitle>
-        <CardDescription className="text-muted-foreground">
+        <CardDescription className="text-muted-foreground text-xs sm:text-sm">
           Track your spending with AI assistance
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+      <CardContent className="px-4 sm:px-6">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-1.5 sm:space-y-2">
               <Label
                 htmlFor="description"
-                className="text-sm font-medium text-foreground"
+                className="text-xs sm:text-sm font-medium text-foreground"
               >
                 Expense Description
               </Label>
@@ -160,13 +158,13 @@ const AddExpenseForm = ({ onAddExpense }) => {
                 placeholder="Coffee, groceries, gas..."
                 value={formData.text}
                 onChange={(e) => handleInputChange("text")(e.target.value)}
-                className="bg-background border-border"
+                className="bg-background border-border text-sm sm:text-base py-1.5 sm:py-2"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               <Label
                 htmlFor="date"
-                className="text-sm font-medium text-foreground"
+                className="text-xs sm:text-sm font-medium text-foreground"
               >
                 Expense Date
               </Label>
@@ -175,7 +173,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal bg-background border-border",
+                      "w-full justify-start text-left font-normal bg-background border-border text-sm sm:text-base py-1.5 sm:py-2",
                       !formData.date && "text-muted-foreground"
                     )}
                   >
@@ -196,11 +194,11 @@ const AddExpenseForm = ({ onAddExpense }) => {
               </Popover>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="space-y-1.5 sm:space-y-2">
               <Label
                 htmlFor="category"
-                className="text-sm font-medium text-foreground"
+                className="text-xs sm:text-sm font-medium text-foreground"
               >
                 Category
               </Label>
@@ -208,7 +206,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
                 value={formData.category}
                 onValueChange={handleInputChange("category")}
               >
-                <SelectTrigger className="bg-background border-border">
+                <SelectTrigger className="bg-background border-border text-sm sm:text-base py-1.5 sm:py-2">
                   <SelectValue placeholder="Select category..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -219,12 +217,11 @@ const AddExpenseForm = ({ onAddExpense }) => {
                   ))}
                 </SelectContent>
               </Select>
-
-              {/* AI Suggest Button */}
               <Button
                 type="button"
                 onClick={handleSuggestCategory}
                 disabled={isSuggesting || !formData.text}
+                className="w-full mt-2 text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white py-1.5 sm:py-2"
               >
                 {isSuggesting ? (
                   <>
@@ -236,16 +233,16 @@ const AddExpenseForm = ({ onAddExpense }) => {
                 )}
               </Button>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               <Label
                 htmlFor="amount"
-                className="text-sm font-medium text-foreground"
+                className="text-xs sm:text-sm font-medium text-foreground"
               >
                 Amount
               </Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-                  $
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm">
+                  Rs
                 </span>
                 <Input
                   id="amount"
@@ -254,14 +251,14 @@ const AddExpenseForm = ({ onAddExpense }) => {
                   placeholder="50"
                   value={formData.amount}
                   onChange={(e) => handleInputChange("amount")(e.target.value)}
-                  className="pl-8 bg-background border-border"
+                  className="pl-8 bg-background border-border text-sm sm:text-base py-1.5 sm:py-2"
                 />
               </div>
             </div>
           </div>
           <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            className="w-full bg-green-600 hover:bg-green-700 text-white text-sm sm:text-base py-2 sm:py-2.5"
             disabled={
               isLoading ||
               !formData.text ||
